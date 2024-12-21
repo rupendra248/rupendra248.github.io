@@ -1,21 +1,19 @@
 <<?php
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $to = 'roodra248@gmail.com'; // Replace with your email address
-    $from_name = htmlspecialchars($_POST['name']);
-    $from_email = htmlspecialchars($_POST['email']);
-    $subject = htmlspecialchars($_POST['subject']);
-    $message = htmlspecialchars($_POST['message']);
-    
-    $headers = "From: $from_name <$from_email>\r\n";
-    $headers .= "Reply-To: $from_email\r\n";
+$to = 'roodra248@gmail.com';
+$name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
+$from = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+$subject = filter_input(INPUT_POST, 'subject', FILTER_SANITIZE_SPECIAL_CHARS);
+$message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_SPECIAL_CHARS);
 
-    if (mail($to, $subject, $message, $headers)) {
-        echo "Message sent successfully!";
-    } else {
-        echo "Failed to send message. Please try again.";
-    }
+if (filter_var($from, FILTER_VALIDATE_EMAIL)) {
+    $headers = ['From' => ($name?"<$name> ":'').$from,
+            'X-Mailer' => 'PHP/' . phpversion()
+           ];
+
+    mail($to, $subject, $message."\r\n\r\nfrom: ".$_SERVER['REMOTE_ADDR'], $headers);
+    die('OK');
+    
 } else {
-    echo "Invalid request method.";
+    die('Invalid address');
 }
 ?>
-
