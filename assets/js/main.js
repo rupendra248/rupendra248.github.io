@@ -91,7 +91,10 @@
    * Mobile nav toggle
    */
   on('click', '.mobile-nav-toggle', function(e) {
-    select('body').classList.toggle('mobile-nav-active')
+    let header = select('#header')
+    if (header) {
+      header.classList.toggle('navbar-mobile')
+    }
     this.classList.toggle('bi-list')
     this.classList.toggle('bi-x')
   })
