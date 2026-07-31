@@ -391,6 +391,41 @@ button:focus-visible,
   }
 }
 
+/* Academic Profile Links */
+.academic-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.academic-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid var(--border-glass-bright);
+  border-radius: var(--radius-full);
+  color: var(--text-highlight);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: var(--transition-normal);
+}
+
+.academic-links a:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.academic-links a i {
+  font-size: 1.05rem;
+}
+
 /* Glass Cards */
 .glass-card {
   background: var(--bg-card);
