@@ -3,8 +3,6 @@
 * Dark Mode + Glassmorphism + Dynamic Micro-animations
 *==============================================================*/
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
-
 :root {
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-heading: 'Outfit', sans-serif;
@@ -174,6 +172,36 @@ section {
   border: 1px solid var(--border-glass-bright);
 }
 
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -120%);
+  z-index: 10001;
+  padding: 12px 24px;
+  background: var(--accent-primary);
+  color: #FFFFFF;
+  font-weight: 600;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translate(-50%, 0);
+  color: #FFFFFF;
+  outline: 2px solid #FFFFFF;
+  outline-offset: -6px;
+}
+
+/* Visible focus ring for keyboard users throughout */
+a:focus-visible,
+button:focus-visible,
+.form-control-custom:focus-visible {
+  outline: 2px solid var(--text-highlight);
+  outline-offset: 3px;
+}
+
 /* Mobile Nav Toggle */
 .mobile-nav-toggle {
   position: fixed;
@@ -181,6 +209,8 @@ section {
   top: 20px;
   z-index: 10000;
   font-size: 24px;
+  line-height: 1;
+  padding: 0;
   color: #fff;
   background: var(--bg-card);
   border: 1px solid var(--border-glass);
@@ -348,6 +378,19 @@ section {
   box-shadow: var(--shadow-accent-glow);
 }
 
+/* keep all seven icons on one row on phones */
+@media (max-width: 480px) {
+  .social-links {
+    gap: 8px;
+  }
+
+  .social-links a {
+    width: 38px;
+    height: 38px;
+    font-size: 1.05rem;
+  }
+}
+
 /* Glass Cards */
 .glass-card {
   background: var(--bg-card);
@@ -420,6 +463,16 @@ section {
   margin-bottom: 6px;
 }
 
+/* Subsection Headings */
+.subsection-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  padding-left: 14px;
+  border-left: 4px solid var(--accent-primary);
+  line-height: 1.2;
+}
+
 /* Research Page Redesign */
 .research-card {
   background: var(--bg-card);
@@ -444,11 +497,19 @@ section {
 
 .research-carousel img {
   width: 100%;
-  height: 320px;
+  height: 400px;
   object-fit: contain;
   background: rgba(0, 0, 0, 0.3);
   border-radius: var(--radius-md);
+  padding: 12px;
   margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+  .research-carousel img {
+    height: 250px;
+    padding: 8px;
+  }
 }
 
 .research-card ul {
@@ -548,6 +609,37 @@ section {
   padding: 2px 10px;
   border-radius: var(--radius-full);
   margin-bottom: 8px;
+}
+
+/* Course / Teaching Lists */
+.course-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.course-list li {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-glass);
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.course-list li:last-child {
+  border-bottom: none;
+}
+
+.course-code {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-highlight);
+  background: rgba(59, 130, 246, 0.12);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
 }
 
 /* Facts / Counter Cards */
@@ -684,4 +776,31 @@ section {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* Respect users who have asked for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .glass-card:hover,
+  .publication-card:hover,
+  .social-links a:hover,
+  .btn-primary-custom:hover,
+  .btn-secondary-custom:hover,
+  .back-to-top:hover {
+    transform: none;
+  }
+
+  /* keep the failsafe working - it relies on an animation */
+  #preloader {
+    animation-duration: 0.01ms !important;
+    animation-delay: 3s !important;
+  }
 }

@@ -21,6 +21,8 @@
     }
   }
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
   /**
    * Back to top button
    */
@@ -34,7 +36,7 @@
 
     backtotop.addEventListener('click', (e) => {
       e.preventDefault()
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' })
     })
   }
 
@@ -43,11 +45,14 @@
    */
   on('click', '.mobile-nav-toggle', function(e) {
     let header = select('#header')
-    if (header) {
-      header.classList.toggle('navbar-mobile')
+    let open = header ? header.classList.toggle('navbar-mobile') : false
+    let icon = this.querySelector('i')
+    if (icon) {
+      icon.classList.toggle('bi-list', !open)
+      icon.classList.toggle('bi-x', open)
     }
-    this.classList.toggle('bi-list')
-    this.classList.toggle('bi-x')
+    this.setAttribute('aria-expanded', String(open))
+    this.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu')
   })
 
   /**
@@ -74,13 +79,28 @@
   const typed = select('.typed')
   if (typed && typeof Typed !== 'undefined') {
     let typed_strings = typed.getAttribute('data-typed-items').split(',')
-    new Typed('.typed', {
-      strings: typed_strings,
-      loop: true,
-      typeSpeed: 100,
-      backSpeed: 50,
-      backDelay: 2000
-    });
+    if (reducedMotion) {
+      // no animation: just state the specialisms
+      typed.textContent = typed_strings.map(s => s.trim()).join(', ')
+    } else {
+      new Typed('.typed', {
+        strings: typed_strings,
+        loop: true,
+        typeSpeed: 100,
+        backSpeed: 50,
+        backDelay: 2000
+      });
+    }
+  }
+
+  /**
+   * Stop auto-cycling carousels when reduced motion is requested
+   */
+  if (reducedMotion && typeof bootstrap !== 'undefined') {
+    select('.carousel', true).forEach(el => {
+      const c = bootstrap.Carousel.getOrCreateInstance(el, { ride: false, interval: false })
+      c.pause()
+    })
   }
 
   /**
@@ -89,7 +109,7 @@
   window.addEventListener('load', () => {
     if (typeof AOS !== 'undefined') {
       AOS.init({
-        duration: 1000,
+        duration: reducedMotion ? 0 : 1000,
         easing: 'ease-in-out',
         once: true,
         mirror: false
