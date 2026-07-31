@@ -611,6 +611,37 @@ section {
   margin-top: 20px;
 }
 
+/* Back to Top */
+.back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9998;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: #FFFFFF;
+  font-size: 1.8rem;
+  box-shadow: var(--shadow-accent-glow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: var(--transition-normal);
+}
+
+.back-to-top.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  color: #FFFFFF;
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px rgba(59, 130, 246, 0.45);
+}
+
 #preloader {
   position: fixed;
   top: 0;
@@ -623,6 +654,22 @@ section {
   align-items: center;
   justify-content: center;
   transition: opacity 0.5s ease, visibility 0.5s ease;
+  /* Failsafe: never trap the page behind the loader, even if JS fails */
+  animation: preloader-failsafe 0s ease 3s forwards;
+}
+
+#preloader.done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@keyframes preloader-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
 
 #preloader::after {
