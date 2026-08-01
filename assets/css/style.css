@@ -474,6 +474,33 @@ strong { font-weight: 600; }
   border-bottom-color: var(--accent);
 }
 
+/* Profile marks: brand glyphs, set quietly in ink rather than brand colour */
+.iconlinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+}
+
+.iconlinks a {
+  display: inline-flex;
+  padding: 5px;
+  color: var(--ink-muted);
+  text-decoration: none;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.iconlinks a:hover {
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.iconlinks svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
 /*---------------------------------------------------------------
  * Figures
  *-------------------------------------------------------------*/
@@ -804,6 +831,15 @@ pre {
 
   .gallery {
     grid-auto-columns: min(88%, 30rem);
+  }
+
+  /* keep all nine profile marks on one row */
+  .iconlinks {
+    gap: 0.35rem;
+  }
+
+  .iconlinks a {
+    padding: 4px;
   }
 }
 
