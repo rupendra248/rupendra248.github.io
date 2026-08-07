@@ -28,6 +28,37 @@
   --page: 68rem;
 }
 
+/* Night ink: the same page after dark. Chosen by the masthead toggle
+ * (persisted in localStorage) or, without JavaScript, by the system
+ * preference below. */
+:root[data-theme="dark"] {
+  --paper: #191613;
+  --paper-sunk: #211D18;
+  --plate: #201C18;
+  --ink: #ECE6DA;
+  --ink-soft: #C9C1B2;
+  --ink-muted: #948B7D;
+  --rule: #38332C;
+  --rule-strong: #575046;
+  --accent: #D2745C;
+  --accent-soft: #3A2620;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #191613;
+    --paper-sunk: #211D18;
+    --plate: #201C18;
+    --ink: #ECE6DA;
+    --ink-soft: #C9C1B2;
+    --ink-muted: #948B7D;
+    --rule: #38332C;
+    --rule-strong: #575046;
+    --accent: #D2745C;
+    --accent-soft: #3A2620;
+  }
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -191,6 +222,31 @@ strong { font-weight: 600; }
 .masthead nav a[aria-current="page"] {
   color: var(--ink);
   border-bottom-color: var(--ink);
+}
+
+/* Day/night switch; hidden until site.js reveals it */
+.themetoggle {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: lowercase;
+  color: var(--ink-muted);
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+  padding: 0.28rem 0.7rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.themetoggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.themetoggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 /*---------------------------------------------------------------
@@ -581,6 +637,36 @@ figcaption .fignum {
 }
 
 /*---------------------------------------------------------------
+ * Sensor field simulation (home page)
+ *-------------------------------------------------------------*/
+
+#wsn {
+  display: block;
+  width: 100%;
+  height: clamp(260px, 38vw, 400px);
+  cursor: crosshair;
+  touch-action: manipulation;
+}
+
+/*---------------------------------------------------------------
+ * Scroll reveal: class applied by site.js, so nothing is hidden
+ * when scripts don't run
+ *-------------------------------------------------------------*/
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(0.5rem);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*---------------------------------------------------------------
  * Disclosure (BibTeX, abstracts)
  *-------------------------------------------------------------*/
 
@@ -622,6 +708,34 @@ details > div {
   padding: 0 0 1rem 1.1rem;
   max-width: var(--measure);
   color: var(--ink-soft);
+}
+
+/* Clipboard button inserted above BibTeX blocks by site.js */
+.copybtn {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+  padding: 0.3rem 0.7rem;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.copybtn:hover,
+.copybtn.is-done {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.copybtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 pre {
@@ -848,17 +962,25 @@ pre {
  *-------------------------------------------------------------*/
 
 @media print {
-  :root {
+  :root,
+  :root[data-theme="dark"] {
     --paper: #fff;
+    --plate: #fff;
+    --paper-sunk: #f2f2f2;
     --ink: #000;
     --ink-soft: #222;
     --ink-muted: #555;
+    --rule: #ccc;
+    --rule-strong: #999;
   }
 
   .masthead nav,
   .skip-link,
   .btn,
-  .textlinks {
+  .textlinks,
+  .themetoggle,
+  .copybtn,
+  .section--field {
     display: none;
   }
 
